@@ -2,6 +2,7 @@ package com.zdq.tree;
 
 import java.util.Comparator;
 
+//二叉搜索树
 @SuppressWarnings("unchecked")
 public class BST<E> extends BinaryTree<E> {
 	private Comparator<E> comparator;
@@ -21,6 +22,8 @@ public class BST<E> extends BinaryTree<E> {
 		if (root == null) {
 			root = new Node<>(element, null);
 			size++;
+			//添加节点之后
+			afterAdd(root);
 			return;
 		}
 		
@@ -50,6 +53,16 @@ public class BST<E> extends BinaryTree<E> {
 			parent.left = newNode;
 		}
 		size++;
+//		添加节点之后
+		afterAdd(newNode);
+	}
+
+	/**
+	 * 添加node之后
+	 * @param node
+	 */
+	protected void afterAdd(Node<E> node) {
+
 	}
 
 	public void remove(E element) {

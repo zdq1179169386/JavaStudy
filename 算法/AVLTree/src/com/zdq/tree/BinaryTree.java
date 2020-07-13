@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import com.zdq.printer.BinaryTreeInfo;
 
+//二叉树
 @SuppressWarnings("unchecked")
 public class BinaryTree<E> implements BinaryTreeInfo {
 	protected int size;
