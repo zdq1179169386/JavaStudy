@@ -20,7 +20,7 @@ public class BST<E> extends BinaryTree<E> {
 		
 		// 添加第一个节点
 		if (root == null) {
-			root = new Node<>(element, null);
+			root = createNode(element,null);
 			size++;
 			//添加节点之后
 			afterAdd(root);
@@ -46,7 +46,7 @@ public class BST<E> extends BinaryTree<E> {
 		}
 
 		// 看看插入到父节点的哪个位置
-		Node<E> newNode = new Node<>(element, parent);
+		Node<E> newNode = createNode(element,parent);
 		if (cmp > 0) {
 			parent.right = newNode;
 		} else {

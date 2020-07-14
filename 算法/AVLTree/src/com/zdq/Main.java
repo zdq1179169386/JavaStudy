@@ -1,13 +1,8 @@
 package com.zdq;
-
-import java.util.Comparator;
-
-import com.zdq.file.Files;
-import com.zdq.printer.BinaryTreeInfo;
 import com.zdq.printer.BinaryTrees;
+import com.zdq.tree.AVLTree;
 import com.zdq.tree.BST;
 import com.zdq.tree.BinaryTree;
-import com.zdq.tree.BinaryTree.Visitor;
 
 @SuppressWarnings("unused")
 public class Main {
@@ -28,8 +23,20 @@ public class Main {
 		
 		BinaryTrees.println(bst);
 	}
+
+	static void test2() {
+		Integer data[] = new Integer[] {
+				67, 52, 92, 96, 53, 95, 13, 63, 34, 82, 76, 54, 9, 68, 39
+		};
+
+		AVLTree<Integer> avl = new AVLTree<>();
+		for (int i = 0; i < data.length; i++) {
+			avl.add(data[i]);
+		}
+		BinaryTrees.println(avl);
+	}
 	
 	public static void main(String[] args) {
-		test1();
+		test2();
 	}
 }

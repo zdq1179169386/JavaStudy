@@ -1,8 +1,6 @@
 package com.zdq.tree;
-
 import java.util.LinkedList;
 import java.util.Queue;
-
 import com.zdq.printer.BinaryTreeInfo;
 
 //二叉树
@@ -182,8 +180,11 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 		while (node.parent != null && node == node.parent.right) {
 			node = node.parent;
 		}
-
 		return node.parent;
+	}
+//	创建新节点
+	protected Node<E> createNode(E element,Node<E> parent) {
+		return new Node<>(element,parent);
 	}
 
 	public static interface Visitor<E> {
@@ -207,6 +208,14 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 		public boolean hasTwoChildren() {
 			return left != null && right != null;
 		}
+
+		public boolean isLeftChild() {
+			return parent != null && this == parent.left;
+		}
+
+		public boolean isRightChild() {
+			return parent != null && this == parent.right;
+		}
 	}
 
 	@Override
@@ -226,11 +235,12 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
 	@Override
 	public Object string(Object node) {
-		Node<E> myNode = (Node<E>)node;
-		String parentString = "null";
-		if (myNode.parent != null) {
-			parentString = myNode.parent.element.toString();
-		}
-		return myNode.element + "_p(" + parentString + ")";
+//		Node<E> myNode = (Node<E>)node;
+//		String parentString = "null";
+//		if (myNode.parent != null) {
+//			parentString = myNode.parent.element.toString();
+//		}
+//		return myNode.element + "_p(" + parentString + ")";
+		return node;
 	}
 }
