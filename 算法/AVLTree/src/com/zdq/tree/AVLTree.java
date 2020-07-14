@@ -28,7 +28,7 @@ public class AVLTree<E> extends BST<E>{
      * 恢复平衡
      * @param grand
      */
-    private void rebalance(Node<E> grand) {
+    private void rebalance2(Node<E> grand) {
         Node<E> parent = ((AVLNode<E>)grand).tallerChild();
         Node<E> node = ((AVLNode<E>)parent).tallerChild();
         if (parent.isLeftChild()) { // L
@@ -71,11 +71,65 @@ public class AVLTree<E> extends BST<E>{
         parent.right = grand;
         afterRotate(grand,parent,node);
     }
-    //
-    private void rebalance2(Node<E> grand) {
 
+    /**
+     * 恢复平衡2
+     * @param grand
+     */
+    private void rebalance(Node<E> grand) {
+        Node<E> parent = ((AVLNode<E>)grand).tallerChild();
+        Node<E> node = ((AVLNode<E>)parent).tallerChild();
+        if (parent.isLeftChild()) {//L
+            if (node.isLeftChild()) { //LL
+                rotate(grand,node,node.right,parent,parent.right,grand);
+            } else{ //LR
+                rotate(grand,parent,node.left,node,node.right,grand);
+            }
+        } else{ //R
+            if (node.isLeftChild()) { //RL
+                rotate(grand,grand,node.left,node,node.right,parent);
+            } else{ //RR
+                rotate(grand,grand,parent.left,parent,node.left,node);
+            }
+        }
     }
 
+    /**
+     * 统一旋转
+     */
+    private void rotate(
+            Node<E> r,//子树根节点
+            Node<E> b, Node<E> c,
+            Node<E> d,
+            Node<E> e, Node<E> f ) {
+        //让d 成为子树的根节点
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+            r.parent.left = d;
+        } else if(r.isRightChild()){
+            r.parent.right = d;
+        } else{
+            root = d;
+        }
+        //b-c
+        b.right = c;
+        if (c != null) {
+            c.parent = b;
+        }
+        updateHeight(b);
+        //e-f
+        f.left = e;
+        if (e != null) {
+            e.parent = f;
+        }
+        updateHeight(f);
+        //b-d-f
+        d.left = b;
+        d.right = f;
+        b.parent = d;
+        f.parent = b;
+        updateHeight(d);
+    }
     /**
      * 更新父节点和高度
      * @param grand
@@ -98,6 +152,24 @@ public class AVLTree<E> extends BST<E>{
         //更新高度
         updateHeight(grand);
         updateHeight(parent);
+    }
+
+    /**
+     * 删除节点也会导致失衡
+     * @param node
+     */
+    @Override
+    protected void afterRemove(Node<E> node) {
+        while ((node = node.parent) != null) {
+            if (isBalance(node)) {
+                //更新高度
+                updateHeight(node);
+            } else{
+                //恢复平衡
+                rebalance(node);
+                break;
+            }
+        }
     }
 
     @Override

@@ -101,15 +101,22 @@ public class BST<E> extends BinaryTree<E> {
 			} else { // node == node.parent.right
 				node.parent.right = replacement;
 			}
+			afterRemove(node);
 		} else if (node.parent == null) { // node是叶子节点并且是根节点
 			root = null;
+			afterRemove(node);
 		} else { // node是叶子节点，但不是根节点
 			if (node == node.parent.left) {
 				node.parent.left = null;
 			} else { // node == node.parent.right
 				node.parent.right = null;
 			}
+			afterRemove(node);
 		}
+	}
+
+	protected void afterRemove(Node<E> node) {
+
 	}
 	
 	private Node<E> node(E element) {
