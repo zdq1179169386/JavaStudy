@@ -1,5 +1,4 @@
 package com.zdq.tree;
-
 import java.util.Comparator;
 
 //二叉搜索树
@@ -101,7 +100,7 @@ public class BST<E> extends BinaryTree<E> {
 			} else { // node == node.parent.right
 				node.parent.right = replacement;
 			}
-			afterRemove(node);
+			afterRemove(replacement);
 		} else if (node.parent == null) { // node是叶子节点并且是根节点
 			root = null;
 			afterRemove(node);
