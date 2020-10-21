@@ -174,9 +174,10 @@ public class HashMap<K,V> implements Map<K,V> {
         if (node.hasTwoChildren()) { // 度为2的节点
             // 找到后继节点
             Node<K, V> s = successor(node);
-            // 用后继节点的值覆盖度为2的节点的值
+            // 用后继节点的值覆盖度为2的节点的值,因为哈希值不一样，所以也要覆盖
             node.key = s.key;
             node.value = s.value;
+            node.hash = s.hash;
             // 删除后继节点
             node = s;
         }
