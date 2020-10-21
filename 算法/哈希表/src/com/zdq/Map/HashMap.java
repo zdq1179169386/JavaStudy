@@ -48,20 +48,48 @@ public class HashMap<K,V> implements Map<K,V> {
         //添加新节点
         Node<K, V> parent = root;
         Node<K, V> node = root;
+        Node<K, V> result = null;
         int cmp = 0;
         int h1 = key == null ? 0 : key.hashCode();
+        K k1 = key;
+        boolean searched = false;//是否已经搜索过这个key
         do {
-            cmp = compare(key, node.key,h1,node.hash);
-            parent = node;
-            if (cmp > 0) {
+           parent = node;
+           K k2 = node.key;
+           int h2 = node.hash;
+           if (h1 > h2) {
+               cmp = 1;
+           } else if (h1 < h2){
+               cmp = -1;
+           } else if (Objects.equals(k1,k2)){
+               cmp = 0;
+           } else if (k1 != null && k2 != null
+                   && k1.getClass() == k2.getClass()
+                   && k1 instanceof Comparable
+                   && (cmp = ((Comparable)k1).compareTo(k2)) != 0
+           ) { }
+            else if (searched) {
+                cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+           } else { // searched == false; 还没有扫描，然后再根据内存地址大小决定左右
+                if ((node.left != null && (result = node(node.left,key)) != null)
+                    || (node.right != null && (result = node(node.right,key)) != null)) {
+                    node = result;
+                    cmp = 0;
+                } else {
+                    //不存在这个key
+                    searched = true;
+                    cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+                }
+           }
+            if (cmp > 0){
                 node = node.right;
-            } else if (cmp < 0) {
+            } else if (cmp < 0){
                 node = node.left;
-            } else { // 相等
+            } else {
+                V old = node.value;
                 node.key = key;
-                V oldValue = node.value;
                 node.value = value;
-                return oldValue;
+                return old;
             }
         } while (node != null);
 
@@ -287,6 +315,7 @@ public class HashMap<K,V> implements Map<K,V> {
         Node<K,V> root = table[index(key)];
         return  root == null ? null : node(root,key);
     }
+    //不能根据 compare 判断两个key 相等，只能通过 equals,判断两个key 完全相同
     private Node<K,V> node(Node<K,V> node,K k1) {
         int h1 = k1 == null ? 0 : k1.hashCode();
         Node<K,V> result = null;
@@ -307,10 +336,9 @@ public class HashMap<K,V> implements Map<K,V> {
                 node = cmp > 0 ? node.right : node.left;
             } else if (node.right != null && (result = node(node.right,k1)) != null){
                 return result;
-            } else if (node.left != null && (result = node(node.left,k1)) != null){
-                return result;
-            } else{
-                return null;
+            }  else{
+                //只能从左边找
+                node = node.left;
             }
         }
         return  null;
