@@ -1,6 +1,6 @@
 package Heap;
 
-//堆
+//堆接口
 public interface Heap<E> {
     int size();
     boolean isEmpty();
