@@ -12,7 +12,27 @@ public class BinaryHeap<E> extends AbstractHeap<E> {
     }
 
     public BinaryHeap() {
-        this(null);
+        this(null,null);
+    }
+
+    //批量建堆
+    public BinaryHeap(E[] elements) {
+        this(elements,null);
+    }
+    public BinaryHeap(E[] elements,Comparator comparator){
+        super(comparator);
+        if (elements == null || elements.length == 0){
+            this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+        } else{
+            //拷贝
+            size = elements.length;
+            int capacity = elements.length;
+            this.elements = (E[]) new Object[capacity];
+            for (int i = 0; i < capacity; i++) {
+                this.elements[i] = elements[i];
+            }
+            heapify();
+        }
     }
 
     @Override
@@ -34,7 +54,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> {
     @Override
     public E get() {
         emptyCheck();
-        return null;
+        return elements[0];
     }
 
     @Override
@@ -124,6 +144,17 @@ public class BinaryHeap<E> extends AbstractHeap<E> {
             newElements[i] = elements[i];
         }
         elements = newElements;
+    }
+    //批量建堆
+    private void heapify() {
+        //自上而下的上滤
+//        for (int i = 1; i < size; i++) {
+//            siftUp(i);
+//        }
+        //自下而上的下滤
+        for (int i = ((size >> 1) -1); i >= 0 ; i--) {
+            siftDown(i);
+        }
     }
     //检查空
     private void emptyCheck() {
