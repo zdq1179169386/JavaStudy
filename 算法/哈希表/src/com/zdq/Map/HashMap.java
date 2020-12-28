@@ -453,7 +453,7 @@ public class HashMap<K,V> implements Map<K,V> {
     private int index(K key) {
         if (key == null) return 0;
         int hash = key.hashCode();
-//        >>> 无符号右移
+    // >>> 无符号右移
         return (hash ^ (hash >>> 16)) & (table.length - 1);
     }
     // 找到node 对应索引,在桶数组中的位置,对上面方法的优化
